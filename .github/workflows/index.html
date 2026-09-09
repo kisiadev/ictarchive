@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ICT 융합보안 아카이브</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- PapaParse CDN (구글 시트 CSV 파싱 라이브러리) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <style>
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+    * { font-family: 'Pretendard', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+  <!-- Header & Hero -->
+  <header class="bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 text-white py-12 px-6 shadow-md">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold mb-3 border border-blue-400/30">
+          <i class="fa-solid fa-shield-halved"></i> ICT 융합산업보안 인재 양성 & 지식 공유
+        </div>
+        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">ICT 융합보안 아카이브</h1>
+        <p class="mt-2 text-slate-300 text-sm md:text-base">ICT융합보안크루 활동 성과 및 산업보안 세미나 기술 자료 아카이브</p>
+      </div>
+      <div class="flex gap-3">
+        <a href="#crew-section" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition shadow-sm">
+          <i class="fa-solid fa-users mr-1"></i> 크루 활동관
+        </a>
+        <a href="#seminar-section" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 rounded-lg text-sm font-medium transition shadow-sm">
+          <i class="fa-solid fa-book-open mr-1"></i> 세미나 자료실
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-6 py-10 space-y-16 flex-grow w-full">
+
+    <!-- Section 1: ICT융합보안크루 -->
+    <section id="crew-section" class="space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <span class="text-blue-600"><i class="fa-solid fa-user-graduate"></i></span> ICT융합보안크루 아카이브
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">기수별 활동 타임라인 및 우수 프로젝트 성과물</p>
+        </div>
+        <!-- 기수 탭 필터 (데이터 기반 자동 생성) -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1" id="crew-gen-filters">
+          <button onclick="filterCrew('ALL')" class="crew-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-blue-600 text-white shadow-sm">전체</button>
+        </div>
+      </div>
+
+      <!-- 카드 그리드 -->
+      <div id="crew-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="col-span-full py-12 text-center text-slate-400 text-sm">
+          <i class="fa-solid fa-spinner fa-spin mr-2"></i> 구글 스프레드시트에서 데이터를 불러오는 중입니다...
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: ICT융합산업보안 세미나 -->
+    <section id="seminar-section" class="space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <span class="text-emerald-600"><i class="fa-solid fa-file-lines"></i></span> 산업보안 세미나 자료실
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">세미나 발표 자료(PDF) 다운로드 및 다시보기 영상</p>
+        </div>
+        <!-- 실시간 검색 및 도메인 필터 -->
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+            <input type="text" id="seminar-search" oninput="renderSeminars()" placeholder="주제, 연사 검색..." class="pl-8 pr-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 shadow-sm" />
+          </div>
+          <select id="seminar-domain-filter" onchange="renderSeminars()" class="text-xs py-1.5 px-3 bg-white border border-slate-200 rounded-lg text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm">
+            <option value="ALL">전체 분야</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 테이블 -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm text-slate-600">
+            <thead class="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase">
+              <tr>
+                <th scope="col" class="py-3 px-4">분야</th>
+                <th scope="col" class="py-3 px-4">세션 주제 / 행사명</th>
+                <th scope="col" class="py-3 px-4">연사자 / 소속</th>
+                <th scope="col" class="py-3 px-4">일시</th>
+                <th scope="col" class="py-3 px-4 text-center">자료 / 영상</th>
+              </tr>
+            </thead>
+            <tbody id="seminar-table-body" class="divide-y divide-slate-100">
+              <tr>
+                <td colspan="5" class="py-12 text-center text-slate-400 text-xs">
+                  <i class="fa-solid fa-spinner fa-spin mr-2"></i> 세미나 자료를 불러오는 중입니다...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-400 mt-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <p>© 2026 KISIA ALL RIGHTS RESERVED.</p>
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- ⚙️ 구글 스프레드시트 연동 스크립트 -->
+  <!-- ========================================== -->
+  <script>
+    // ⚠️ STEP 2에서 복사한 본인의 구글 시트 CSV 링크를 아래 따옴표 안에 넣어주세요.
+    const CREW_CSV_URL = "여기에_CREW_시트_CSV_URL을_붙여넣으세요";
+    const SEMINAR_CSV_URL = "여기에_SEMINAR_시트_CSV_URL을_붙여넣으세요";
+
+    let crewData = [https://docs.google.com/spreadsheets/d/e/2PACX-1vSX8ZG1BwtKpvS72k4ut88Nf2gdn9PP78EFKjedj9_s56NuOeYLpsxcmG8L4pTPWjGIuNy0xpTCnsBt/pub?gid=0&single=true&output=csv];
+    let seminarData = [https://docs.google.com/spreadsheets/d/e/2PACX-1vSX8ZG1BwtKpvS72k4ut88Nf2gdn9PP78EFKjedj9_s56NuOeYLpsxcmG8L4pTPWjGIuNy0xpTCnsBt/pub?gid=1085601582&single=true&output=csv];
+    let currentGenFilter = 'ALL';
+
+    // CSV 데이터 파싱 함수 (PapaParse 활용)
+    function fetchSheetData(url) {
+      return new Promise((resolve, reject) => {
+        Papa.parse(url, {
+          download: true,
+          header: true,
+          skipEmptyLines: true,
+          complete: results => resolve(results.data),
+          error: err => reject(err)
+        });
+      });
+    }
+
+    // 전체 초기화 및 데이터 로드
+    async function initArchive() {
+      try {
+        // 실제 URL이 설정되었는지 확인 (미설정 시 데모 데이터 사용 안내)
+        if (CREW_CSV_URL.includes("여기에_") || SEMINAR_CSV_URL.includes("여기에_")) {
+          console.warn("구글 스프레드시트 URL이 등록되지 않아 데모 모드로 전환합니다.");
+          loadDemoData();
+          return;
+        }
+
+        const [crewRes, seminarRes] = await Promise.all([
+          fetchSheetData(CREW_CSV_URL),
+          fetchSheetData(SEMINAR_CSV_URL)
+        ]);
+
+        crewData = crewRes;
+        seminarData = seminarRes;
+
+        setupCrewFilters();
+        setupSeminarFilters();
+        renderCrewCards();
+        renderSeminars();
+
+      } catch (error) {
+        console.error("데이터 로드 실패:", error);
+        document.getElementById('crew-grid').innerHTML = `
+          <div class="col-span-full py-12 text-center text-red-500 text-xs">
+            구글 스프레드시트 데이터를 불러오는 데 실패했습니다. [웹에 게시] 설정을 확인해주세요.
+          </div>
+        `;
+      }
+    }
+
+    // 크루 기수 버튼 자동 생성
+    function setupCrewFilters() {
+      const container = document.getElementById('crew-gen-filters');
+      const gens = [...new Set(crewData.map(d => d.gen).filter(Boolean))].sort().reverse();
+      
+      let html = `<button onclick="filterCrew('ALL')" class="crew-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-blue-600 text-white shadow-sm">전체</button>`;
+      gens.forEach(gen => {
+        html += `<button onclick="filterCrew('${gen}')" class="crew-filter-btn px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 shadow-sm">${gen}</button>`;
+      });
+      container.innerHTML = html;
+    }
+
+    function filterCrew(gen) {
+      currentGenFilter = gen;
+      const buttons = document.querySelectorAll('.crew-filter-btn');
+      buttons.forEach(btn => {
+        if (btn.innerText.trim() === gen || (gen === 'ALL' && btn.innerText.trim() === '전체')) {
+          btn.className = 'crew-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-blue-600 text-white shadow-sm';
+        } else {
+          btn.className = 'crew-filter-btn px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 shadow-sm';
+        }
+      });
+      renderCrewCards();
+    }
+
+    // 크루 카드 렌더링
+    function renderCrewCards() {
+      const grid = document.getElementById('crew-grid');
+      const filtered = currentGenFilter === 'ALL' ? crewData : crewData.filter(item => item.gen === currentGenFilter);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400 text-xs">등록된 활동 내역이 없습니다.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(item => {
+        const isBest = String(item.isBest).toUpperCase() === 'TRUE';
+        return `
+          <div class="bg-white rounded-xl border border-slate-200 p-5 flex flex-col justify-between hover:shadow-md transition-shadow relative">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200">${item.gen || ''} · ${item.category || ''}</span>
+                ${isBest ? '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-50 text-amber-600 border border-amber-200"><i class="fa-solid fa-award mr-1"></i>우수작</span>' : ''}
+              </div>
+              <span class="text-xs font-semibold text-blue-600 tracking-wide uppercase">[${item.domain || '일반'}]</span>
+              <h3 class="text-base font-bold text-slate-900 mt-1 leading-snug">${item.title || ''}</h3>
+              <p class="text-xs text-slate-500 mt-2 line-clamp-2">${item.description || ''}</p>
+              ${item.team ? `<p class="text-[11px] text-slate-400 mt-2"><i class="fa-solid fa-users text-[10px] mr-1"></i>${item.team}</p>` : ''}
+            </div>
+            <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="text-slate-400"><i class="fa-regular fa-calendar mr-1"></i>${item.date || ''}</span>
+              ${item.link ? `
+                <a href="${item.link}" target="_blank" class="font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+                  산출물 보기 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </a>
+              ` : '<span class="text-slate-300">자료 준비중</span>'}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 세미나 분야 셀렉트박스 자동 구성
+    function setupSeminarFilters() {
+      const select = document.getElementById('seminar-domain-filter');
+      const domains = [...new Set(seminarData.map(d => d.domain).filter(Boolean))].sort();
+      
+      let html = `<option value="ALL">전체 분야</option>`;
+      domains.forEach(d => {
+        html += `<option value="${d}">${d}</option>`;
+      });
+      select.innerHTML = html;
+    }
+
+    // 세미나 테이블 렌더링
+    function renderSeminars() {
+      const keyword = (document.getElementById('seminar-search').value || '').toLowerCase();
+      const domain = document.getElementById('seminar-domain-filter').value;
+      const tbody = document.getElementById('seminar-table-body');
+
+      const filtered = seminarData.filter(item => {
+        const titleMatch = (item.title || '').toLowerCase().includes(keyword);
+        const speakerMatch = (item.speaker || '').toLowerCase().includes(keyword);
+        const domainMatch = domain === 'ALL' || item.domain === domain;
+        return (titleMatch || speakerMatch) && domainMatch;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-xs text-slate-400">조건에 일치하는 세미나 자료가 없습니다.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(item => `
+        <tr class="hover:bg-slate-50 transition-colors">
+          <td class="py-3.5 px-4 whitespace-nowrap">
+            <span class="px-2 py-1 rounded bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200">${item.domain || '-'}</span>
+          </td>
+          <td class="py-3.5 px-4 font-semibold text-slate-800">${item.title || ''}</td>
+          <td class="py-3.5 px-4 text-xs text-slate-600 whitespace-nowrap">${item.speaker || '-'}</td>
+          <td class="py-3.5 px-4 text-xs text-slate-400 whitespace-nowrap">${item.date || '-'}</td>
+          <td class="py-3.5 px-4 text-center whitespace-nowrap">
+            <div class="inline-flex items-center gap-1.5">
+              ${item.pdfUrl ? `
+                <a href="${item.pdfUrl}" target="_blank" class="px-2.5 py-1 rounded text-xs bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100 transition font-medium">
+                  <i class="fa-solid fa-file-pdf mr-1"></i>PDF
+                </a>
+              ` : '<span class="text-xs text-slate-300">-</span>'}
+              ${item.videoUrl ? `
+                <a href="${item.videoUrl}" target="_blank" class="px-2.5 py-1 rounded text-xs bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 transition font-medium">
+                  <i class="fa-brands fa-youtube mr-1"></i>영상
+                </a>
+              ` : ''}
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // URL 입력 전 테스트용 예시 데이터
+<!--
+    function loadDemoData() {
+      crewData = [
+        { gen: "3기", category: "발대식/OT", domain: "융합보안", isBest: "FALSE", title: "제3기 ICT융합보안크루 발대식 및 OT", date: "2026-05-06", team: "크루원 35명", description: "위촉장 수여 및 연간 프로젝트 운영 안내", link: "#" },
+        { gen: "2기", category: "성과발표회", domain: "스마트제조", isBest: "TRUE", title: "PLC 제어망 이상 트래픽 탐지 경량 모델", date: "2025-11-28", team: "팩토리쉴드", description: "Modbus 기반 비인가 쓰기 명령 탐지 AI 모델", link: "#" }
+      ];
+      seminarData = [
+        { domain: "AI보안", title: "2026 AI 융합보안 트렌드 및 침해 대응", speaker: "김한국 박사", date: "2026-04-28", pdfUrl: "#", videoUrl: "https://youtube.com" }
+      ];
+      setupCrewFilters();
+      setupSeminarFilters();
+      renderCrewCards();
+      renderSeminars();
+    }
+-->
+    window.addEventListener('DOMContentLoaded', initArchive);
+  </script>
+</body>
+</html>
