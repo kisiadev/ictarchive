@@ -115,7 +115,7 @@
   <!-- Footer -->
   <footer class="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-400 mt-16">
     <div class="max-w-6xl mx-auto px-6">
-      <p>© 2026 KISIA ALL RIGHTS RESERVED.</p>
+      <p>© ICT융합보안 아카이브. 데이터는 구글 스프레드시트와 실시간 연동됩니다.</p>
     </div>
   </footer>
 
@@ -124,8 +124,8 @@
   <!-- ========================================== -->
   <script>
     // ⚠️ STEP 2에서 복사한 본인의 구글 시트 CSV 링크를 아래 따옴표 안에 넣어주세요.
-    const CREW_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSX8ZG1BwtKpvS72k4ut88Nf2gdn9PP78EFKjedj9_s56NuOeYLpsxcmG8L4pTPWjGIuNy0xpTCnsBt/pub?gid=0&single=true&output=csv";
-    const SEMINAR_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSX8ZG1BwtKpvS72k4ut88Nf2gdn9PP78EFKjedj9_s56NuOeYLpsxcmG8L4pTPWjGIuNy0xpTCnsBt/pub?gid=1085601582&single=true&output=csv";
+    const CREW_CSV_URL = "여기에_CREW_시트_CSV_URL을_붙여넣으세요";
+    const SEMINAR_CSV_URL = "여기에_SEMINAR_시트_CSV_URL을_붙여넣으세요";
 
     let crewData = [];
     let seminarData = [];
@@ -296,7 +296,6 @@
     }
 
     // URL 입력 전 테스트용 예시 데이터
-<!--
     function loadDemoData() {
       crewData = [
         { gen: "3기", category: "발대식/OT", domain: "융합보안", isBest: "FALSE", title: "제3기 ICT융합보안크루 발대식 및 OT", date: "2026-05-06", team: "크루원 35명", description: "위촉장 수여 및 연간 프로젝트 운영 안내", link: "#" },
@@ -310,7 +309,7 @@
       renderCrewCards();
       renderSeminars();
     }
--->
+
     window.addEventListener('DOMContentLoaded', initArchive);
   </script>
 </body>
