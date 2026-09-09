@@ -124,11 +124,11 @@
   <!-- ========================================== -->
   <script>
     // ⚠️ STEP 2에서 복사한 본인의 구글 시트 CSV 링크를 아래 따옴표 안에 넣어주세요.
-    const CREW_CSV_URL = "여기에_CREW_시트_CSV_URL을_붙여넣으세요";
-    const SEMINAR_CSV_URL = "여기에_SEMINAR_시트_CSV_URL을_붙여넣으세요";
+    const CREW_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSX8ZG1BwtKpvS72k4ut88Nf2gdn9PP78EFKjedj9_s56NuOeYLpsxcmG8L4pTPWjGIuNy0xpTCnsBt/pub?gid=0&single=true&output=csv";
+    const SEMINAR_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSX8ZG1BwtKpvS72k4ut88Nf2gdn9PP78EFKjedj9_s56NuOeYLpsxcmG8L4pTPWjGIuNy0xpTCnsBt/pub?gid=1085601582&single=true&output=csv";
 
-    let crewData = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSX8ZG1BwtKpvS72k4ut88Nf2gdn9PP78EFKjedj9_s56NuOeYLpsxcmG8L4pTPWjGIuNy0xpTCnsBt/pub?gid=0&single=true&output=csv";
-    let seminarData = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSX8ZG1BwtKpvS72k4ut88Nf2gdn9PP78EFKjedj9_s56NuOeYLpsxcmG8L4pTPWjGIuNy0xpTCnsBt/pub?gid=1085601582&single=true&output=csv";
+    let crewData = [];
+    let seminarData = [];
     let currentGenFilter = 'ALL';
 
     // CSV 데이터 파싱 함수 (PapaParse 활용)
