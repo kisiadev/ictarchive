@@ -25,7 +25,7 @@
           <i class="fa-solid fa-shield-halved"></i> ICT 융합산업보안 인재 양성 & 지식 공유
         </div>
         <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">ICT 융합보안 아카이브</h1>
-        <p class="mt-2 text-slate-300 text-sm md:text-base">ICT융합보안크루 활동 성과 및 산업보안 세미나 기술 자료 아카이브</p>
+        <p class="mt-2 text-slate-300 text-sm md:text-base">ICT융합보안크루 활동 성과 및 산업보안 컨퍼런스/세미나 기술 자료 아카이브</p>
       </div>
       <div class="flex gap-3">
         <a href="#crew-section" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition shadow-sm">
@@ -69,7 +69,7 @@
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
           <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-            <span class="text-emerald-600"><i class="fa-solid fa-file-lines"></i></span> 산업보안 세미나 자료실
+            <span class="text-emerald-600"><i class="fa-solid fa-file-lines"></i></span> 산업보안 컨퍼런스/세미나 자료실
           </h2>
           <p class="text-sm text-slate-500 mt-1">세미나 발표 자료(PDF) 다운로드 및 다시보기 영상</p>
         </div>
@@ -123,9 +123,8 @@
   <!-- ⚙️ 구글 스프레드시트 연동 스크립트 -->
   <!-- ========================================== -->
   <script>
-    // ⚠️ STEP 2에서 복사한 본인의 구글 시트 CSV 링크를 아래 따옴표 안에 넣어주세요.
-    const CREW_CSV_URL = "여기에_CREW_시트_CSV_URL을_붙여넣으세요";
-    const SEMINAR_CSV_URL = "여기에_SEMINAR_시트_CSV_URL을_붙여넣으세요";
+    const CREW_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSX8ZG1BwtKpvS72k4ut88Nf2gdn9PP78EFKjedj9_s56NuOeYLpsxcmG8L4pTPWjGIuNy0xpTCnsBt/pub?gid=0&single=true&output=csv";
+    const SEMINAR_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSX8ZG1BwtKpvS72k4ut88Nf2gdn9PP78EFKjedj9_s56NuOeYLpsxcmG8L4pTPWjGIuNy0xpTCnsBt/pub?gid=1085601582&single=true&output=csv";
 
     let crewData = [];
     let seminarData = [];
